@@ -9,6 +9,18 @@ import (
 // decode ccqline to (key string, symbols []string)
 func decodeCCQLine(line string) (string, []string) {
 	temp := strings.Split(line, " ")
+
+	// clean word slice in case some "" inside
+	temp = func(a []string) []string {
+		b := []string{}
+		for _, w := range a {
+			if w != "" {
+				b = append(b, w)
+			}
+		}
+		return b
+	}(temp)
+
 	key := temp[0][1:]
 
 	temp = temp[1:]
