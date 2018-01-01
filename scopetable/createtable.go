@@ -6,6 +6,17 @@ var (
 	ScopeDepTable map[string][]string
 )
 
-func AddEntry(key string, value []string, table *map[string][]string) {
+//:= MARK: I can use method instead of function
+func AddEntry(key string, value []string, table map[string][]string) {
+	table[key] = value
+}
 
+func CreateTable(path string) {
+	lineChan := make(chan string)
+
+	decode.ReadFile(path, lineChan)
+
+	for line := range lineChan {
+
+	}
 }

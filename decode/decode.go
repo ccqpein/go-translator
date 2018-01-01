@@ -56,4 +56,7 @@ func ReadFile(path string, lineChan chan string) {
 			}
 		}
 	}
+
+	// close chan
+	close(lineChan)
 }

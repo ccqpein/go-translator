@@ -31,7 +31,7 @@ func TestReadFile(t *testing.T) {
 	go ReadFile("./test.ccq", tempchan)
 	go func() {
 		time.Sleep(time.Second * 2) // close channal after 2 seconds
-		close(tempchan)
+		//close(tempchan)
 	}()
 
 	for s := range tempchan {
