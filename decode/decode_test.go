@@ -10,23 +10,23 @@ func TestDecodeCCQLine(t *testing.T) {
 	line := "(Adam (G546 G549))"
 	line2 := "(G798  (f \"./table.ccq\" :direction :output :if-exists :supersede :if-does-not-exist   :create))"
 
-	if key, symbols := decodeCCQLine(line); key != "Adam" ||
-		symbols[0] != "G546" ||
-		symbols[1] != "G549" {
-		fmt.Println(key, symbols)
+	if line1 := decodeCCQLine(line); line1.symbol != "Adam" ||
+		line1.content[0] != "G546" ||
+		line1.content[1] != "G549" {
+		fmt.Println(line1)
 		t.Errorf("decode wrong")
 	}
 
-	if key, symbols := decodeCCQLine(line2); key != "G798" ||
-		symbols[0] != "f" ||
-		symbols[1] != "\"./table.ccq\"" {
-		fmt.Println(key, symbols)
+	if line2 := decodeCCQLine(line2); line2.symbol != "G798" ||
+		line2.content[0] != "f" ||
+		line2.content[1] != "\"./table.ccq\"" {
+		fmt.Println(line2)
 		t.Errorf("decode wrong")
 	}
 }
 
 func TestReadFile(t *testing.T) {
-	tempchan := make(chan string)
+	tempchan := make(chan CcqLine)
 
 	go ReadFile("./test.ccq", tempchan)
 	go func() {
@@ -35,7 +35,7 @@ func TestReadFile(t *testing.T) {
 	}()
 
 	for s := range tempchan {
-		t.Log(decodeCCQLine(s))
+		t.Log(s)
 	}
 
 }

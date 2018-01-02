@@ -2,18 +2,20 @@ package scopetable
 
 import (
 	"testing"
+
+	"../decode"
 )
 
 var testTable = map[string][]string{}
 
 func TestAddEntry(t *testing.T) {
-	AddEntry("test", []string{"1", "2"}, testTable)
+	AddEntry(&decode.CcqLine{"test", []string{"1", "2"}}, testTable)
 
 	if v1, _ := testTable["test"]; v1[0] != "1" || v1[1] != "2" {
 		t.Errorf("add wrong")
 	}
 
-	AddEntry("test", []string{"a", "b"}, testTable)
+	AddEntry(&decode.CcqLine{"test", []string{"a", "b"}}, testTable)
 
 	if v2, _ := testTable["test"]; v2[0] != "a" || v2[1] != "b" {
 		t.Errorf("update wrong")

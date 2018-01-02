@@ -1,5 +1,9 @@
 package scopetable
 
+import (
+	"../decode"
+)
+
 //:= TODO: may use sync.Map in futrue
 var (
 	ScopeTable    map[string][]string
@@ -7,16 +11,16 @@ var (
 )
 
 //:= MARK: I can use method instead of function
-func AddEntry(key string, value []string, table map[string][]string) {
-	table[key] = value
+func AddEntry(line *decode.CcqLine, table map[string][]string) {
+	table[line.Symbol] = line.Content
 }
 
 func CreateTable(path string) {
-	lineChan := make(chan string)
+	lineChan := make(chan decode.CcqLine)
 
 	decode.ReadFile(path, lineChan)
 
 	for line := range lineChan {
-
+		AddEntry(&line, ScopeTable)
 	}
 }

@@ -6,8 +6,13 @@ import (
 	"strings"
 )
 
+type CcqLine struct {
+	Symbol  string
+	Content []string
+}
+
 // decode ccqline to (key string, symbols []string)
-func decodeCCQLine(line string) (string, []string) {
+func decodeCCQLine(line string) CcqLine {
 	temp := strings.Split(line, " ")
 
 	// clean word slice in case some "" inside
@@ -30,10 +35,10 @@ func decodeCCQLine(line string) (string, []string) {
 	lastWord = lastWord[:len(lastWord)-2]
 	temp[len(temp)-1] = lastWord
 
-	return key, temp
+	return CcqLine{key, temp}
 }
 
-func ReadFile(path string, lineChan chan string) {
+func ReadFile(path string, lineChan chan CcqLine) {
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -51,7 +56,7 @@ func ReadFile(path string, lineChan chan string) {
 		if thisLine != "" {
 			line = append(line, thisLine)
 			if thisLine[len(thisLine)-2] == ')' {
-				lineChan <- strings.Join(line, " ")
+				lineChan <- decodeCCQLine(strings.Join(line, " "))
 				line = []string{}
 			}
 		}
