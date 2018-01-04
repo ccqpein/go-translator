@@ -35,5 +35,6 @@ func TestCreateTable(t *testing.T) {
 	CreateTable("../table.ccq")
 
 	t.Log(ScopeTable)
+	t.Log(ScopeDepTable)
 
 }

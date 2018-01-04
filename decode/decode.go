@@ -56,11 +56,19 @@ func ReadFile(path string, lineChan chan CcqLine) {
 		thisLine = scanner.Text()
 		if thisLine != "" {
 			line = append(line, thisLine)
+
 			if thisLine[len(thisLine)-2] == ')' {
 				fmt.Println(line)
 				lineChan <- decodeCCQLine(strings.Join(line, " "))
 				line = []string{}
 			}
+
+			if thisLine[:4] == "#:->" {
+				temp := strings.Split(thisLine, " ")
+				lineChan <- CcqLine{temp[1], []string{"table change"}}
+				line = []string{}
+			}
+
 		}
 	}
 
