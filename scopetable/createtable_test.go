@@ -27,4 +27,13 @@ func TestAddEntry(t *testing.T) {
 			t.Errorf("data is not consistent")
 		}
 	}
+
+	t.Log(testTable)
+}
+
+func TestCreateTable(t *testing.T) {
+	CreateTable("../table.ccq")
+
+	t.Log(ScopeTable)
+
 }
