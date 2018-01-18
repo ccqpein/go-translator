@@ -2,8 +2,32 @@
 
 package generator
 
+import (
+	"os"
+	"strings"
+	"text/template"
+
+	"../codetemplate"
+)
+
+type Function struct {
+	FuncName   string
+	Parameters []string
+	ReturnType string
+}
+
 func ReadScope(scopetable map[string][]string, keyword string) []string {
 	return scopetable[keyword]
 }
 
-func ReadPredicate()
+func CreateFunc(symbols []string) error {
+	thisFunc := Function{}
+	temp0 := strings.Split(symbols[1], ":")
+
+	thisFunc.FuncName = temp0[0]
+	thisFunc.ReturnType = temp0[1]
+
+	template.Must(template.New("function").Parse(codetemplate.GetTemplate("func.tmpl"))).Execute(os.Stdout, thisFunc)
+
+	return nil
+}
