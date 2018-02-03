@@ -3,5 +3,5 @@ package generator
 import "testing"
 
 func TestCreateFunc(t *testing.T) {
-	CreateFunc([]string{"func", "helloWorld:string", "G555", "G556", "G557"})
+	CreateFunc([]string{"func", "helloWorld", "a:int b:int", "->", "string int", "G556", "G557"})
 }

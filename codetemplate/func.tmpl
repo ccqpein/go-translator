@@ -1,1 +1,5 @@
-func {{.FuncName}}({{block "parameters" .}}{{end}}) {{.ReturnType}} {}
+func {{.FuncName}}({{.Parameters}}) {{.ReturnType}} {
+{{range .Body}}
+  {{.}}
+{{end}}
+}
