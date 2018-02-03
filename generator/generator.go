@@ -22,12 +22,16 @@ func ReadScope(scopetable map[string][]string, keyword string) []string {
 
 func CreateFunc(symbols []string) error {
 	thisFunc := Function{}
+	f, _ := os.Create("result")
+	defer f.Close()
+
 	temp0 := strings.Split(symbols[1], ":")
 
 	thisFunc.FuncName = temp0[0]
 	thisFunc.ReturnType = temp0[1]
 
-	template.Must(template.New("function").Parse(codetemplate.GetTemplate("func.tmpl"))).Execute(os.Stdout, thisFunc)
+	s := codetemplate.GetTemplate("../codetemplate/func.tmpl")
+	template.Must(template.New("function").Parse(s)).Execute(f, thisFunc)
 
 	return nil
 }
