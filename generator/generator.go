@@ -23,17 +23,22 @@ func ReadScope(scopetable map[string][]string, keyword string) []string {
 	return scopetable[keyword]
 }
 
-func CreateFunc(symbols []string) error {
+func CreateFunc(symbols []string, table map[string][]string) error {
 	thisFunc := Function{}
 	f, _ := os.Create("result")
 	defer f.Close()
 
 	thisFunc.FuncName = symbols[1]
 	// check if this function has return value
-	thisFunc.ReturnType = CreateTurpleWithBox(symbols[4])
-
-	thisFunc.Parameters = CreateTurple(symbols[2])
-	thisFunc.Body = []string{"aa", "bb"}
+	if symbols[4][0] == 'G' {
+		thisFunc.ReturnType = CreateTurpleWithBox(table[symbols[4]])
+	} else {
+		thisFunc.ReturnType = symbols[4]
+	}
+	thisFunc.Parameters = CreateTurple(table[symbols[2]])
+	for i := 5; i < len(symbols); i++ {
+		thisFunc.Body = append(thisFunc.Body, CreateExpression(table[symbols[i]]))
+	}
 
 	s := codetemplate.GetTemplate("../codetemplate/func.tmpl")
 	masterTmpl, err := template.New("function").Parse(s)
@@ -47,11 +52,11 @@ func CreateFunc(symbols []string) error {
 }
 
 // Turple used in function parameters, function call, and return values
-func CreateTurple(content string) string {
-	cutWithSpace := strings.Split(content, " ")
+func CreateTurple(content []string) string {
+	//cutWithSpace := strings.Split(content, " ")
 	result := []string{}
 
-	for _, s := range cutWithSpace {
+	for _, s := range content {
 		result = append(result, strings.Replace(s, ":", " ", -1))
 	}
 
@@ -59,6 +64,10 @@ func CreateTurple(content string) string {
 }
 
 // Turple with bracket pair
-func CreateTurpleWithBox(content string) string {
+func CreateTurpleWithBox(content []string) string {
 	return fmt.Sprintf("(%s)", CreateTurple(content))
+}
+
+func CreateExpression(content []string) string {
+	return ""
 }

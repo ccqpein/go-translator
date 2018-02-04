@@ -3,5 +3,15 @@ package generator
 import "testing"
 
 func TestCreateFunc(t *testing.T) {
-	CreateFunc([]string{"func", "helloWorld", "a:int b:int", "->", "string int", "G556", "G557"})
+	CreateFunc([]string{"func", "helloWorld", "G590", "->", "G591", "G592", "G593"}, map[string][]string{
+		"G590": []string{"s:string"},
+		"G591": []string{"string", "int"},
+		"G592": []string{},
+		"G593": []string{},
+	})
+}
+
+func TestCreateTurple(t *testing.T) {
+	t.Log(CreateTurple([]string{"string", "int"}))
+	t.Log(CreateTurple([]string{"s:string", "a:int"}))
 }
