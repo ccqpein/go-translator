@@ -35,6 +35,7 @@ func CreateFunc(symbols []string, table map[string][]string) error {
 	} else {
 		thisFunc.ReturnType = symbols[4]
 	}
+
 	thisFunc.Parameters = CreateTurple(table[symbols[2]])
 	for i := 5; i < len(symbols); i++ {
 		thisFunc.Body = append(thisFunc.Body, CreateExpression(table[symbols[i]]))
@@ -69,5 +70,7 @@ func CreateTurpleWithBox(content []string) string {
 }
 
 func CreateExpression(content []string) string {
+	fmt.Sprintf("%s()")
+
 	return ""
 }

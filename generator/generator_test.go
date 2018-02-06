@@ -6,8 +6,8 @@ func TestCreateFunc(t *testing.T) {
 	CreateFunc([]string{"func", "helloWorld", "G590", "->", "G591", "G592", "G593"}, map[string][]string{
 		"G590": []string{"s:string"},
 		"G591": []string{"string", "int"},
-		"G592": []string{},
-		"G593": []string{},
+		"G592": []string{"fmt.Println", "\"hello world\"", "s"},
+		"G593": []string{"return", "waahaha"},
 	})
 }
 
