@@ -25,6 +25,7 @@ func ReadScope(scopetable map[string][]string, keyword string) []string {
 
 func CreateFunc(symbols []string, table map[string][]string) error {
 	thisFunc := Function{}
+	length := len(symbols)
 	f, _ := os.Create("result")
 	defer f.Close()
 
@@ -37,7 +38,8 @@ func CreateFunc(symbols []string, table map[string][]string) error {
 	}
 
 	thisFunc.Parameters = CreateTurple(table[symbols[2]])
-	for i := 5; i < len(symbols); i++ {
+
+	for i := 5; i < length; i++ {
 		thisFunc.Body = append(thisFunc.Body, CreateExpression(table[symbols[i]]))
 	}
 
@@ -70,7 +72,13 @@ func CreateTurpleWithBox(content []string) string {
 }
 
 func CreateExpression(content []string) string {
-	fmt.Sprintf("%s()")
+	var expression string
+	//:= MARK: stop here, need design keyword map
+	if keyWTeml, ok := keywords[content[0]]; ok {
+		expression = fmt.Sprintf("%s %s", content[0], content[1:])
+	} else {
+		expression = fmt.Sprintf("%s%s", content[0], CreateTurpleWithBox(content[1:]))
+	}
 
-	return ""
+	return expression
 }
