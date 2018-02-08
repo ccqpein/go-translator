@@ -75,7 +75,7 @@ func CreateExpression(content []string) string {
 	var expression string
 	//:= MARK: stop here, need design keyword map
 	if keyWTeml, ok := keywords[content[0]]; ok {
-		expression = fmt.Sprintf("%s %s", content[0], content[1:])
+		expression = fmt.Sprintf("%s %s", content[0:], content[1:])
 	} else {
 		expression = fmt.Sprintf("%s%s", content[0], CreateTurpleWithBox(content[1:]))
 	}
