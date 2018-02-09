@@ -2,7 +2,6 @@ package decode
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strings"
 )
@@ -58,7 +57,7 @@ func ReadFile(path string, lineChan chan CcqLine) {
 			line = append(line, thisLine)
 
 			if thisLine[len(thisLine)-2] == ')' {
-				fmt.Println(line)
+				//fmt.Println(line)
 				lineChan <- decodeCCQLine(strings.Join(line, " "))
 				line = []string{}
 			}

@@ -19,9 +19,11 @@ type Function struct {
 	Body       []string
 }
 
+/*
 func ReadScope(scopetable map[string][]string, keyword string) []string {
 	return scopetable[keyword]
 }
+*/
 
 func CreateFunc(symbols []string, table map[string][]string) error {
 	thisFunc := Function{}
@@ -43,13 +45,18 @@ func CreateFunc(symbols []string, table map[string][]string) error {
 		thisFunc.Body = append(thisFunc.Body, CreateExpression(table[symbols[i]]))
 	}
 
-	s := codetemplate.GetTemplate("../codetemplate/func.tmpl")
+	s := codetemplate.GetTemplate("func.tmpl")
 	masterTmpl, err := template.New("function").Parse(s)
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
 
-	masterTmpl.Execute(f, thisFunc)
+	err = masterTmpl.Execute(f, thisFunc)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
 
 	return nil
 }
