@@ -25,6 +25,15 @@ func ReadScope(scopetable map[string][]string, keyword string) []string {
 }
 */
 
+func GeneratorRouter(startSymbol string, table *map[string][]string) {
+	expression, ok := table[startSymbol]
+	if ok != nil {
+		panic("some thing wrong")
+	}
+
+	//switch
+}
+
 func CreateFunc(symbols []string, table map[string][]string) error {
 	thisFunc := Function{}
 	length := len(symbols)
