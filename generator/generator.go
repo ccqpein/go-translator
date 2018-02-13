@@ -31,7 +31,10 @@ func GeneratorRouter(startSymbol string, table *map[string][]string) {
 		panic("some thing wrong")
 	}
 
-	//switch
+	switch expression[0] {
+	case "func":
+
+	}
 }
 
 func CreateFunc(symbols []string, table map[string][]string) error {

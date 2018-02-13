@@ -1,1 +1,7 @@
-func helloWorld() string {}
+func helloWorld(s string) (string, int) {
+
+  fmt.Println("hello world", s)
+
+  return waahaha, lalala
+
+}
