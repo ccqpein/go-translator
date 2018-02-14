@@ -10,6 +10,7 @@ import (
 	"text/template"
 
 	"../codetemplate"
+	"../scopetable"
 )
 
 type Function struct {
@@ -25,19 +26,29 @@ func ReadScope(scopetable map[string][]string, keyword string) []string {
 }
 */
 
-func GeneratorRouter(startSymbol string, table *map[string][]string) {
+func GeneratorRouter(startSymbol string, table map[string][]string) (string, error) {
 	expression, ok := table[startSymbol]
-	if ok != nil {
+	if !ok {
 		panic("some thing wrong")
 	}
 
-	switch expression[0] {
-	case "func":
+	var (
+		result string
+		err    error
+	)
 
+	if keyWTeml, ok := keywords[expression[0]]; ok {
+		result, err = keyWTeml(expression, scopetable.ScopeTable)
+	} else {
+		result, err = CreateExpression(expression)
 	}
+
+	return result, err
 }
 
-func CreateFunc(symbols []string, table map[string][]string) error {
+func CreateFunc(symbols []string, argv ...interface{}) (string, error) {
+	table := argv[0].(map[string][]string)
+
 	thisFunc := Function{}
 	length := len(symbols)
 	f, _ := os.Create("result")
@@ -54,23 +65,24 @@ func CreateFunc(symbols []string, table map[string][]string) error {
 	thisFunc.Parameters = CreateTurple(table[symbols[2]])
 
 	for i := 5; i < length; i++ {
-		thisFunc.Body = append(thisFunc.Body, CreateExpression(table[symbols[i]]))
+		temp, _ := GeneratorRouter(symbols[i], table)
+		thisFunc.Body = append(thisFunc.Body, temp)
 	}
 
 	s := codetemplate.GetTemplate("func.tmpl")
 	masterTmpl, err := template.New("function").Parse(s)
 	if err != nil {
 		log.Fatal(err)
-		return err
+		return "", err
 	}
 
 	err = masterTmpl.Execute(f, thisFunc)
 	if err != nil {
 		log.Fatal(err)
-		return err
+		return "", err
 	}
 
-	return nil
+	return "", nil
 }
 
 // Turple used in function parameters, function call, and return values
@@ -90,14 +102,11 @@ func CreateTurpleWithBox(content []string) string {
 	return fmt.Sprintf("(%s)", CreateTurple(content))
 }
 
-func CreateExpression(content []string) string {
+func CreateExpression(content []string, argvs ...interface{}) (string, error) {
 	var expression string
-	//:= MARK: stop here, need design keyword map
-	if keyWTeml, ok := keywords[content[0]]; ok {
-		expression = keyWTeml(content)
-	} else {
-		expression = fmt.Sprintf("%s%s", content[0], CreateTurpleWithBox(content[1:]))
-	}
+	var err error = nil
 
-	return expression
+	expression = fmt.Sprintf("%s%s", content[0], CreateTurpleWithBox(content[1:]))
+
+	return expression, err
 }
