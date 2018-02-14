@@ -7,7 +7,7 @@ func TestCreateFunc(t *testing.T) {
 		"G590": []string{"s:string"},
 		"G591": []string{"string", "int"},
 		"G592": []string{"fmt.Println", "\"hello world\"", "s"},
-		"G593": []string{"return", "waahaha", "lalala"},
+		"G593": []string{"return", "waahaha", "1"},
 	})
 }
 

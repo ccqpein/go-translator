@@ -13,4 +13,7 @@ func init() {
 
 		return result, nil
 	}
+	keywords["package"] = func(a []string, argvs ...interface{}) (string, error) {
+		return strings.Join(a, " ")
+	}
 }

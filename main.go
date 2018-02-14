@@ -14,7 +14,9 @@ func main() {
 	scopetable.CreateTable(args[1])
 	//fmt.Println(scopetable.ScopeTable)
 
-	testFunc := scopetable.ScopeTable["Adam"][0]
+	for _, g := range scopetable.ScopeTable["Adam"] {
+		//:= TODO: need find a way concatenate different part of file
+	}
 
 	//fmt.Println(scopetable.ScopeTable[testFunc])
 	generator.CreateFunc(scopetable.ScopeTable[testFunc],
