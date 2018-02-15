@@ -1,6 +1,8 @@
 package scopetable
 
 import (
+	"fmt"
+
 	"../decode"
 )
 
@@ -10,14 +12,14 @@ var (
 	ScopeDepTable = map[string][]string{}
 )
 
-func AddTableRouter(line *decode.CcqLine, defaultTable *map[string][]string) *map[string][]string {
+func AddTableRouter(line *decode.CcqLine, defaultTable *map[string][]string) (*map[string][]string, bool) {
 	switch line.Symbol {
 	case "dependency-table":
-		return &ScopeDepTable
+		return &ScopeDepTable, true
 	case "scope-table":
-		return &ScopeTable
+		return &ScopeTable, true
 	default:
-		return defaultTable
+		return defaultTable, false
 	}
 }
 
@@ -29,10 +31,15 @@ func AddEntry(line *decode.CcqLine, table map[string][]string) {
 func CreateTable(path string) {
 	lineChan := make(chan decode.CcqLine)
 	var tableFlag *map[string][]string = nil
+	var skip bool = false
+
 	go decode.ReadFile(path, lineChan)
 
 	for line := range lineChan {
-		tableFlag = AddTableRouter(&line, tableFlag)
-		AddEntry(&line, *tableFlag)
+		fmt.Println(line)
+
+		if tableFlag, skip = AddTableRouter(&line, tableFlag); !skip {
+			AddEntry(&line, *tableFlag)
+		}
 	}
 }

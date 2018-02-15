@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"./generator"
@@ -12,13 +13,14 @@ func main() {
 	//fmt.Println(args)
 
 	scopetable.CreateTable(args[1])
-	//fmt.Println(scopetable.ScopeTable)
+	fmt.Println(scopetable.ScopeTable)
 
 	for _, g := range scopetable.ScopeTable["Adam"] {
 		//:= TODO: need find a way concatenate different part of file
+		generator.GeneratorRouter(g, scopetable.ScopeTable)
 	}
 
 	//fmt.Println(scopetable.ScopeTable[testFunc])
-	generator.CreateFunc(scopetable.ScopeTable[testFunc],
-		scopetable.ScopeTable)
+	//generator.CreateFunc(scopetable.ScopeTable[testFunc],
+	//scopetable.ScopeTable)
 }
