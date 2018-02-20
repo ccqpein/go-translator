@@ -10,6 +10,7 @@ func JointFile(path string, fileFlow chan string) {
 	defer f.Close()
 
 	for part := range fileFlow {
+		f.Sync()
 		if _, err = f.WriteString(part); err != nil {
 			panic(err)
 		}
