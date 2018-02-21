@@ -26,7 +26,7 @@ func ReadScope(scopetable map[string][]string, keyword string) []string {
 }
 */
 
-func GeneratorRouter(startSymbol string, table map[string][]string) (string, error) {
+func GeneratorRouter(f *os.File, startSymbol string, table map[string][]string) (string, error) {
 	expression, ok := table[startSymbol]
 	if !ok {
 		panic("some thing wrong")
@@ -38,7 +38,7 @@ func GeneratorRouter(startSymbol string, table map[string][]string) (string, err
 	)
 
 	if keyWTeml, ok := keywords[expression[0]]; ok {
-		result, err = keyWTeml(expression, scopetable.ScopeTable)
+		result, err = keyWTeml(f, expression, scopetable.ScopeTable)
 	} else {
 		result, err = CreateExpression(expression)
 	}
@@ -46,13 +46,11 @@ func GeneratorRouter(startSymbol string, table map[string][]string) (string, err
 	return result, err
 }
 
-func CreateFunc(symbols []string, argv ...interface{}) (string, error) {
+func CreateFunc(file *os.File, symbols []string, argv ...interface{}) (string, error) {
 	table := argv[0].(map[string][]string)
 
 	thisFunc := Function{}
 	length := len(symbols)
-	f, _ := os.Create("result")
-	defer f.Close()
 
 	thisFunc.FuncName = symbols[1]
 	// check if this function has return value
@@ -65,7 +63,7 @@ func CreateFunc(symbols []string, argv ...interface{}) (string, error) {
 	thisFunc.Parameters = CreateTurple(table[symbols[2]])
 
 	for i := 5; i < length; i++ {
-		temp, _ := GeneratorRouter(symbols[i], table)
+		temp, _ := GeneratorRouter(file, symbols[i], table)
 		thisFunc.Body = append(thisFunc.Body, temp)
 	}
 
@@ -76,7 +74,7 @@ func CreateFunc(symbols []string, argv ...interface{}) (string, error) {
 		return "", err
 	}
 
-	err = masterTmpl.Execute(f, thisFunc)
+	err = masterTmpl.Execute(file, thisFunc)
 	if err != nil {
 		log.Fatal(err)
 		return "", err
