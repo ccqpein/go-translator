@@ -15,15 +15,11 @@ func main() {
 	scopetable.CreateTable(args[1])
 	fmt.Println(scopetable.ScopeTable)
 
-	f, _ := os.Create("result")
+	f, _ := os.Create("result.go")
 	defer f.Close()
 
 	for _, g := range scopetable.ScopeTable["Adam"] {
-		//:= TODO: need find a way concatenate different part of file
 		generator.GeneratorRouter(f, g, scopetable.ScopeTable)
 	}
 
-	//fmt.Println(scopetable.ScopeTable[testFunc])
-	//generator.CreateFunc(scopetable.ScopeTable[testFunc],
-	//scopetable.ScopeTable)
 }

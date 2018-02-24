@@ -20,11 +20,10 @@ type Function struct {
 	Body       []string
 }
 
-/*
-func ReadScope(scopetable map[string][]string, keyword string) []string {
-	return scopetable[keyword]
+type Struct struct {
+	SName string
+	Body  string
 }
-*/
 
 func GeneratorRouter(f *os.File, startSymbol string, table map[string][]string) (string, error) {
 	expression, ok := table[startSymbol]
@@ -107,4 +106,29 @@ func CreateExpression(content []string, argvs ...interface{}) (string, error) {
 	expression = fmt.Sprintf("%s%s", content[0], CreateTurpleWithBox(content[1:]))
 
 	return expression, err
+}
+
+func CreateStruct(file *os.File, a []string, argvs ...interface{}) (string, error) {
+	table := argvs[0].(map[string][]string)
+
+	thisStruct := Struct{}
+
+	thisStruct.SName = a[1]
+	thisStruct.Body = strings.Replace(CreateTurple(table[a[2]]), ", ", "\n", -1)
+
+	s := codetemplate.GetTemplate("struct.tmpl")
+	masterTmpl, err := template.New("struct").Parse(s)
+	if err != nil {
+		log.Fatal(err)
+		return "", err
+	}
+
+	err = masterTmpl.Execute(file, thisStruct)
+	if err != nil {
+		log.Fatal(err)
+		return "", err
+	}
+
+	return "", nil
+
 }

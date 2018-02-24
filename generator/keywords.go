@@ -28,4 +28,6 @@ func init() {
 		f.WriteString(tempString)
 		return "", nil
 	}
+
+	keywords["struct"] = CreateStruct
 }
