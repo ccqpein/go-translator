@@ -38,6 +38,7 @@ func decodeCCQLine(line string) CcqLine {
 	return CcqLine{key, temp}
 }
 
+// Read file and send to channel.
 func ReadFile(path string, lineChan chan CcqLine) {
 	file, err := os.Open(path)
 	if err != nil {

@@ -1,3 +1,4 @@
+// Read template files
 package codetemplate
 
 import (

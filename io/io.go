@@ -1,3 +1,4 @@
+// Tool functions or variables for io operations.
 package io
 
 import "os"

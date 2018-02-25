@@ -10,6 +10,7 @@ var keywords = map[string]func(*os.File, []string, ...interface{}) (string, erro
 // avoid initialization loop
 func init() {
 	keywords["func"] = CreateFunc
+
 	keywords["return"] = func(f *os.File, a []string, argvs ...interface{}) (string, error) {
 		result := "return "
 		result += strings.Join(a[1:], ", ")

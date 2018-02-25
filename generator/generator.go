@@ -13,6 +13,7 @@ import (
 	"../scopetable"
 )
 
+// Go function struct
 type Function struct {
 	FuncName   string
 	Parameters string
@@ -20,11 +21,13 @@ type Function struct {
 	Body       []string
 }
 
+// Go struct struct
 type Struct struct {
 	SName string
 	Body  string
 }
 
+// Give symbol to router. Router will get expression and call function depend on first keyword of expression.
 func GeneratorRouter(f *os.File, startSymbol string, table map[string][]string) (string, error) {
 	expression, ok := table[startSymbol]
 	if !ok {
@@ -36,6 +39,8 @@ func GeneratorRouter(f *os.File, startSymbol string, table map[string][]string) 
 		err    error
 	)
 
+	// if expression[0] is keyword, find function in keyword dict
+	// or just make normal expression
 	if keyWTeml, ok := keywords[expression[0]]; ok {
 		result, err = keyWTeml(f, expression, scopetable.ScopeTable)
 	} else {
@@ -45,6 +50,7 @@ func GeneratorRouter(f *os.File, startSymbol string, table map[string][]string) 
 	return result, err
 }
 
+// Key word function of function
 func CreateFunc(file *os.File, symbols []string, argv ...interface{}) (string, error) {
 	table := argv[0].(map[string][]string)
 
@@ -108,6 +114,7 @@ func CreateExpression(content []string, argvs ...interface{}) (string, error) {
 	return expression, err
 }
 
+// Key word function of struct.
 func CreateStruct(file *os.File, a []string, argvs ...interface{}) (string, error) {
 	table := argvs[0].(map[string][]string)
 
