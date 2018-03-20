@@ -121,7 +121,7 @@ func CreateStruct(file *os.File, a []string, argvs ...interface{}) (string, erro
 	thisStruct := Struct{}
 
 	thisStruct.SName = a[1]
-	thisStruct.Body = strings.Replace(CreateTurple(table[a[2]]), ", ", "\n", -1)
+	thisStruct.Body = strings.Replace(CreateTurple(table[a[3]]), ", ", "\n", -1)
 
 	s := codetemplate.GetTemplate("struct.tmpl")
 	masterTmpl, err := template.New("struct").Parse(s)
