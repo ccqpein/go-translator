@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"./generator"
@@ -12,11 +13,13 @@ func main() {
 	//fmt.Println(args)
 
 	scopetable.CreateTable(args[1])
-	//fmt.Println(scopetable.ScopeTable)
+	fmt.Println(scopetable.ScopeTable)
 
-	testFunc := scopetable.ScopeTable["Adam"][0]
+	f, _ := os.Create("result.go")
+	defer f.Close()
 
-	//fmt.Println(scopetable.ScopeTable[testFunc])
-	generator.CreateFunc(scopetable.ScopeTable[testFunc],
-		scopetable.ScopeTable)
+	for _, g := range scopetable.ScopeTable["Adam"] {
+		generator.GeneratorRouter(f, g, scopetable.ScopeTable)
+	}
+
 }
