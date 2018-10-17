@@ -8,6 +8,13 @@ import (
 var keywords = map[string]func(*os.File, []string, ...interface{}) (string, error){}
 
 // avoid initialization loop
+/*
+initialization loop:
+	/Users/cchen386/Desktop/go-translator/generator/keywords.go:8:5 keywords refers to
+	/Users/cchen386/Desktop/go-translator/generator/generator.go:54:6 CreateFunc refers to
+	/Users/cchen386/Desktop/go-translator/generator/generator.go:31:6 GeneratorRouter refers to
+	/Users/cchen386/Desktop/go-translator/generator/keywords.go:8:5 keywords
+*/
 func init() {
 	keywords["func"] = CreateFunc
 
